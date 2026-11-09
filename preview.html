@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMEZONE - Play Your Way</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0b0b14;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 7%;
+  background: #121220;
+  border-bottom: 1px solid #292940;
+}
+
+.logo {
+  font-size: 27px;
+  font-weight: bold;
+  color: #a855f7;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 25px;
+}
+
+nav a:hover {
+  color: #a855f7;
+}
+
+.hero {
+  text-align: center;
+  padding: 90px 20px;
+  background: linear-gradient(135deg, #24104b, #10152f, #101020);
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.hero h1 span {
+  color: #a855f7;
+}
+
+.hero p {
+  color: #bbb;
+  margin-bottom: 25px;
+}
+
+.search {
+  padding: 14px;
+  width: min(90%, 400px);
+  border-radius: 30px;
+  border: 1px solid #555;
+  background: #18182a;
+  color: white;
+  outline: none;
+}
+
+.section {
+  padding: 45px 7%;
+}
+
+.section h2 {
+  margin-bottom: 25px;
+  font-size: 27px;
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.categories button {
+  background: #202035;
+  color: white;
+  border: 1px solid #393956;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.categories button.active,
+.categories button:hover {
+  background: #9333ea;
+}
+
+.games {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 22px;
+}
+
+.game-card {
+  background: #171725;
+  border: 1px solid #292940;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: 0.25s;
+}
+
+.game-card:hover {
+  transform: translateY(-6px);
+  border-color: #a855f7;
+}
+
+.game-image {
+  height: 155px;
+  display: grid;
+  place-items: center;
+  font-size: 65px;
+  background: linear-gradient(135deg, #39206b, #162c55);
+}
+
+.game-info {
+  padding: 18px;
+}
+
+.game-info h3 {
+  margin-bottom: 8px;
+}
+
+.game-info p {
+  color: #aaa;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+.play {
+  width: 100%;
+  border: none;
+  padding: 11px;
+  background: #9333ea;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.play:hover {
+  background: #a855f7;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🎮 GAMEZONE</div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#games">Games</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>PLAY <span>YOUR WAY</span></h1>
+  <p>Discover awesome games and start playing!</p>
+  <input
+    class="search"
+    id="search"
+    placeholder="🔍 Search games..."
+  >
+</section>
+
+<section class="section" id="games">
+  <h2>🎮 Explore Games</h2>
+
+  <div class="categories">
+    <button class="active" data-category="All">All</button>
+    <button data-category="Puzzle">Puzzle</button>
+    <button data-category="Arcade">Arcade</button>
+    <button data-category="Adventure">Adventure</button>
+    <button data-category="Racing">Racing</button>
+  </div>
+
+  <div class="games" id="gameList">
+
+    <div class="game-card" data-category="Arcade">
+      <div class="game-image">🚀</div>
+      <div class="game-info">
+        <h3>Space Explorer</h3>
+        <p>Arcade • Space adventure</p>
+        <button class="play">Play Now</button>
+      </div>
+    </div>
+
+    <div class="game-card" data-category="Puzzle">
+      <div class="game-image">🧩</div>
+      <div class="game-info">
+        <h3>Brain Master</h3>
+        <p>Puzzle • Brain challenges</p>
+        <button class="play">Play Now</button>
+      </div>
+    </div>
+
+    <div class="game-card" data-category="Racing">
+      <div class="game-image">🏎️</div>
+      <div class="game-info">
+        <h3>Speed Racer</h3>
+        <p>Racing • Fast cars</p>
+        <button class="play">Play Now</button>
+      </div>
+    </div>
+
+    <div class="game-card" data-category="Adventure">
+      <div class="game-image">🗺️</div>
+      <div class="game-info">
+        <h3>Lost World</h3>
+        <p>Adventure • Explore worlds</p>
+        <button class="play">Play Now</button>
+      </div>
+    </div>
+
+  </div>
+
+  <p id="message"></p>
+</section>
+
+<script>
+const cards = [...document.querySelectorAll(".game-card")];
+const search = document.getElementById("search");
+const buttons = document.querySelectorAll(".categories button");
+
+let category = "All";
+
+function filterGames() {
+  const term = search.value.toLowerCase();
+
+  cards.forEach(card => {
+    const matchesName = card.innerText.toLowerCase().includes(term);
+    const matchesCategory =
+      category === "All" || card.dataset.category === category;
+
+    card.style.display =
+      matchesName && matchesCategory ? "" : "none";
+  });
+}
+
+search.addEventListener("input", filterGames);
+
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
+    buttons.forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
+    category = button.dataset.category;
+    filterGames();
+  });
+});
+
+document.querySelectorAll(".play").forEach(button => {
+  button.addEventListener("click", () => {
+    const name = button.parentElement.querySelector("h3").innerText;
+    alert("You selected " + name + "! Add your game here.");
+  });
+});
+</script>
+
+</body>
+</html>
